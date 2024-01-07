@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="../static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="../../app.js"></script> -->
+</head>
+
+<!-- 'Total_Stops', 'Journey_day', 'Journey_month', 'Dep_hour',
+       'Dep_minute', 'Arrival_hour', 'Arrival_minute', 'Duration_hour',
+       'Duration_minute', 'Airline_Air India', 'Airline_GoAir',
+       'Airline_IndiGo', 'Airline_Jet Airways', 'Airline_Jet Airways Business',
+       'Airline_Multiple carriers',
+       'Airline_Multiple carriers Premium economy', 'Airline_SpiceJet',
+       'Airline_Trujet', 'Airline_Vistara', 'Airline_Vistara Premium economy',
+       'Chennai', 'Delhi', 'Kolkata', 'Mumbai', 'Cochin', 'Delhi', 'Hyderabad',
+       'Kolkata', 'New Delhi' -->
+
+<body>
+    <div class="container flex flex-col justify-center items-center bg-li bg-gradient-to-r from-violet-500 to-fuchsia-500 font-mono">
+        <div class="font-bold text-xl">AirFare Price Prediction Using ML model</div>
+        <form method="post">
+
+            <!-- <div>
+                <label for="noStop"> No_Stop :
+                    <input type="range" min="1" max="5" name="noStop">
+                </label>
+            </div> -->
+
+            <div class="ml-8 mt-14">
+                <label for="">No. Of stops :
+                    <input type="number" name="noOfStops" class="border-2 border-black rounded-lg">
+                </label>
+            </div>
+
+            <div class="ml-8 mt-14">
+                <label for="">Date :
+                    <input type="date" name="Date" class="border-2 border-black rounded-lg">
+                </label>
+            </div>
+
+            <div class="ml-8 mt-14">
+                <label for="">DepartureTime :
+                    <input type="time" name="DepartureTime" class="border-2 border-black rounded-lg">
+                </label>
+            </div>
+
+            <div class="ml-8 mt-14">
+                <label for="">ArrivalTime :
+                    <input type="time" name="ArrivalTime" class="border-2 border-black rounded-lg">
+                </label>
+            </div>
+
+            <div class="ml-8 mt-14">
+                <label>Source :
+                    <input type="text" name="source" id="inputSource" value="Select source"
+                        class="border-2 border-black hidden">
+                </label>
+                <select id="selectedSource" onchange="updatesource()" class="border-2 border-black rounded-lg">
+                    <option value="0">Select Source</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Cochin">Cochin</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="New Delhi">New Delhi</option>
+                </select>
+
+            </div>
+
+            <div class="ml-8 mt-14">
+                <label>Destination :
+                    <input type="text" name="destination" id="inputDestination" value="Select Destination"
+                        class="border-2 border-black hidden ">
+                </label>
+                <select id="selectedDestination" onchange="updateDestination()" class="border-2 border-black rounded-lg">
+                    <option value="0">Select Destination</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Cochin">Cochin</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="New Delhi">New Delhi</option>
+                </select>
+
+            </div>
+
+            <div class="ml-8 mt-14">
+                <label>AirLine :
+                    <input type="text" name="AirLine" id="inputAirLine" value="Select AirLine"
+                        class="border-2 border-black hidden">
+                </label>
+
+                <select id="selectedAirLine" onchange="updateAirLine()" class="border-2 border-black rounded-lg">
+                    <option value="0">Select AirLine</option>
+                    <option value="Airline_Air India">Airline_Air India</option>
+                    <option value="Airline_GoAir">Airline_GoAir</option>
+                    <option value="Airline_IndiGo">Airline_IndiGo</option>
+                    <option value="Airline_Jet Airways">Airline_Jet Airways</option>
+                    <option value="Airline_Jet Airways Business">Airline_Jet Airways Business</option>
+                    <option value="Airline_Multiple carriers">Airline_Multiple carriers</option>
+                    <option value="Airline_Multiple carriers Premium economy">Airline_Multiple carriers Premium economy</option>
+                    <option value="Airline_SpiceJet">Airline_SpiceJet</option>
+                    <option value="Airline_Vistara">Airline_Vistara</option>
+                    <option value="Airline_Trujet">Airline_Trujet</option>
+                    <option value="Airline_Vistara Premium economy">Airline_Vistara Premium economy</option>
+                </select>
+
+            </div>
+
+            <button type="submit" class="bg-black text-white rounded-lg ml-20 mt-8 mb-6 p-2">Submit</button>
+            <br>
+
+            <h1 class="inline-block font-bold text-xl">Air Fare will be : </h1><h1 class="inline-block font-bold text-xl" id="AirFarePrice"></h1>
+
+        </form>
+
+       
+    </div>
+    <script>
+
+        function updatesource() {
+            document.getElementById("inputSource").value = document.getElementById('selectedSource').value;
+        }
+
+        function updateDestination() {
+            document.getElementById("inputDestination").value = document.getElementById('selectedDestination').value;
+        }
+
+        function updateAirLine() {
+            document.getElementById("inputAirLine").value = document.getElementById('selectedAirLine').value;
+        }
+
+        document.querySelector('form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const data = {};
+
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ data }),
+            });
+            console.log("res:", response);
+            const result = await response.json();
+
+            if (result){
+            console.log("result:", result);
+            document.getElementById('AirFarePrice').innerText = result[0];
+        }
+        });
+    </script>
+</body>
+
+
+
+
+
+</html>
